@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client"; //import the auth client
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {useState} from "react";
@@ -9,8 +10,24 @@ export default function Home() {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+  const onSubmit = () => {
+      authClient.signUp.email({
+          email,
+          name,
+          password,
+      },{
+        onError: () => {
+            window.alert("Somthing went wrong")
+        },
+          onSuccess: () => {
+            window.alert("Success")
+          }
+
+      });
+  }
+
 return(
-   <div>
+   <div className="p-4 flex flex-col gap-y-4">
      <Input
          placeholder="name"
          value={name}
@@ -26,7 +43,7 @@ return(
          value={password}
          onChange={(e) => setPassword(e.target.value)}
      />
-     <Button>
+     <Button onClick={onSubmit}>
        Create user
      </Button>
    </div>
